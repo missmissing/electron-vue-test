@@ -32,15 +32,48 @@
 <script>
   import SystemInformation from './LandingPage/SystemInformation'
 
+  import ipcRender from 'electron'
+  //import { BrowserWindow } from 'electron'
+  //const {BrowserWindow} = require('electron').remote
+  import {remote} from 'electron' //BrowserWindow 只能在主进程使用，可使用remote 获取主进程对象，类似java rmi
+  console.log(ipcRender)
+  console.log(remote)
+  console.log("===-===")
+
+  /*let win = new remote.BrowserWindow({width: 800, height: 600})
+  win.loadURL('https://github.com');*/
+
   export default {
     name: 'landing-page',
     components: { SystemInformation },
     methods: {
       open (link) {
-        this.$electron.shell.openExternal(link)
+        this.$electron.shell.openExternal(link);
       }
     }
   }
+
+  let p = new Promise(function(resolve, reject){
+      resolve(1);
+  });
+  p.then(function(value){               //第一个then
+      console.log(value);     //1
+      return value*2;
+  }).then(function(value){              //第二个then
+      console.log(value);     //2
+  }).then(function(value){              //第三个then
+      console.log(value);     //undefined
+      return Promise.resolve('resolve');
+  }).then(function(value){              //第四个then
+      console.log('--')
+      console.log(value);     //resolve
+      return Promise.reject('reject');
+  }).then(function(value){              //第五个then
+      console.log('##')       // 未执行
+      console.log('resolve 1: '+ value);  // 未执行
+  }, function(err){
+      console.log('reject 2: ' + err);    //reject 2:reject
+  });
 </script>
 
 <style>

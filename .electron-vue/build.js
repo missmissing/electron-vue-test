@@ -110,6 +110,7 @@ function bundleApp () {
 
 function web () {
   del.sync(['dist/web/*', '!.gitkeep'])
+    console.log(require.resolve('electron'))
   webpack(webConfig, (err, stats) => {
     if (err || stats.hasErrors()) console.log(err)
 

@@ -26,11 +26,36 @@
         <div class="name">Platform:</div>
         <div class="value">{{ platform }}</div>
       </div>
+      <div class="item">
+        <div class="name">dirname:</div>
+        <div class="value">{{ dirname }}</div>
+      </div>
+      <div class="item">
+        <div class="name">static:</div>
+        <div class="value">{{ static }}</div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+    import os from 'os'
+    import fs from 'fs'
+
+    const root = fs.readdirSync('/')
+    // 这会打印出磁盘根级别的所有文件
+    // 同时包含'/'和'C:\'。
+    console.log(root);
+    let path = os.homedir() + '\\holo\\';
+    fs.readdirSync(path).forEach((item) => {
+        let stat = fs.statSync(path + item);
+        if (stat.isDirectory()) {
+            console.log("dir: " + item);
+        } else {
+            console.log("file: " + item)
+        }
+    })
+
   export default {
     data () {
       return {
@@ -39,7 +64,9 @@
         node: process.versions.node,
         path: this.$route.path,
         platform: require('os').platform(),
-        vue: require('vue/package.json').version
+        vue: require('vue/package.json').version,
+          dirname : __dirname,
+          static : __static
       }
     }
   }
